@@ -1,73 +1,115 @@
-# React + TypeScript + Vite
+# UIDB Product Browser
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A device catalog browser built with React, powered by the [Ubiquiti UIDB](https://static.ui.com/fingerprint/ui/public.json) public API.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| Tool | Purpose |
+|---|---|
+| Vite + React 19 + TypeScript | App framework |
+| Zustand | Client state (search, filters, view mode) |
+| TanStack Query | Data fetching and caching |
+| React Router v7 | Client-side routing |
+| Zod | Runtime API response validation |
+| CSS Modules | Scoped component styles |
 
-## React Compiler
+## Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Other scripts:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build    # production build
+npm run preview  # preview production build
+npm run lint     # run ESLint
 ```
+
+## Project Structure
+
+```
+src/
+├── components/          # Shared UI (Header, Spinner, ErrorBoundary, icons)
+├── features/
+│   ├── products/        # Device list feature
+│   │   ├── components/  # SearchBar, FilterPanel, ViewToggle, ProductGrid, ProductList, ProductCard
+│   │   └── hooks/       # useProducts, useDebounce
+│   └── product-detail/  # Device detail feature
+│       ├── components/  # ProductDetail
+│       └── hooks/       # useProduct
+├── pages/               # Route-level pages (HomePage, ProductPage, NotFoundPage)
+├── store/               # useStore.ts — Zustand store
+├── types/               # product.ts — Zod schemas and inferred types
+├── lib/                 # api.ts, imageUrl.ts
+├── App.tsx              # Router setup
+└── main.tsx             # Entry point
+```
+
+## Data Flow
+
+```
+UIDB API (public.json)
+  └── fetchDevices()           # lib/api.ts — fetch + Zod validation
+        └── TanStack Query     # cached globally under key ["devices"]
+              └── useProducts()    # features/products/hooks
+                    ├── reads: Zustand (search, selectedLines)
+                    ├── debounces search input (300ms)
+                    ├── filters by product line and name/shortname
+                    └── returns: devices, lines, counts, loading/error state
+                          └── HomePage renders ProductGrid or ProductList
+```
+
+The same `["devices"]` query key is shared between `useProducts` and the `SearchBar` dropdown — TanStack Query deduplicates the request so only one network call is ever made.
+
+## Features
+
+### Search with Dropdown
+- Typing filters the device list (debounced 300ms)
+- A dropdown shows up to 5 live suggestions with the matching text underlined
+- Full keyboard navigation: `Tab` / `↑` / `↓` to move between suggestions, `Enter` to navigate, `Escape` to close
+
+### Filter Panel
+- Opens as an overlay below the Filter button
+- Checkboxes for each product line; multiple selections supported
+- Active filters highlight items in blue
+- Reset button at the bottom (dimmed when nothing is selected)
+
+### View Toggle
+- Switch between **Grid** (card layout) and **List** (table layout)
+- Persisted in Zustand for the session
+- List view has a sticky frosted-glass header row
+
+### Product Detail Page
+- Route: `/devices/:id`
+- Shows device image (with skeleton loader), name, product line, and specs
+- Previous / Next buttons navigate between devices in the current filtered list
+- "See All Details as JSON" opens the raw device object in a new tab
+
+### Pagination
+- List starts at 30 items; "Load more" appends 30 more
+- Resets automatically when search query or filters change
+
+## State Management
+
+Zustand store (`src/store/useStore.ts`) holds three pieces of state:
+
+| State | Type | Description |
+|---|---|---|
+| `search` | `string` | Current search query |
+| `selectedLines` | `string[]` | IDs of active product line filters |
+| `viewMode` | `"grid" \| "list"` | Current display mode |
+
+## API & Validation
+
+- **Endpoint:** `https://static.ui.com/fingerprint/ui/public.json`
+- **Validation:** Every response is parsed through a Zod schema (`UidbResponseSchema`). Invalid responses throw an error rather than silently failing.
+- **Caching:** 5-minute stale time, 2 automatic retries, no refetch on window focus.
+
+## Error Handling
+
+- `ErrorBoundary` at the app root catches any render crash and shows a fallback UI
+- `ErrorState` component is used for loading failures and empty search results
+- API fetch errors and Zod validation failures surface as user-visible messages
