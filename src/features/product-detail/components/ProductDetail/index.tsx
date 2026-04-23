@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useProduct } from "../../hooks/useProduct";
+import { getDeviceImageUrl, DETAIL_IMAGE_SIZE } from "../../../../lib/imageUrl";
 import { Spinner } from "../../../../components/Spinner/Spinner";
 import { ErrorState } from "../../../../components/ErrorState/ErrorState";
 import {
@@ -12,10 +14,13 @@ export const ProductDetail = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { device, prevId, nextId, isLoading, isError } = useProduct(id);
+    const [imgLoaded, setImgLoaded] = useState(false);
 
     if (isLoading) return <Spinner />;
     if (isError) return <ErrorState message="Failed to load device data." />;
     if (!device) return <ErrorState message="Device not found." />;
+
+    const imageUrl = getDeviceImageUrl(device, DETAIL_IMAGE_SIZE);
 
     return (
         <div className={styles.wrapper}>
@@ -48,7 +53,26 @@ export const ProductDetail = () => {
             </div>
 
             <div className={styles.content}>
-                <div className={styles.imageCard}></div>
+                <div className={styles.imageCard}>
+                    {imageUrl ? (
+                        <>
+                            {!imgLoaded && (
+                                <div className={styles.imgSkeleton} />
+                            )}
+                            <img
+                                src={imageUrl}
+                                alt={device.product?.name ?? "Device"}
+                                className={styles.image}
+                                style={{
+                                    display: imgLoaded ? "block" : "none",
+                                }}
+                                onLoad={() => setImgLoaded(true)}
+                            />
+                        </>
+                    ) : (
+                        <div className={styles.noImage} />
+                    )}
+                </div>
 
                 <div className={styles.details}>
                     <h1 className={styles.name}>
