@@ -6,7 +6,7 @@ export const SearchBar = () => {
     const { search, setSearch } = useStore();
 
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} aria-label="Search devices">
             <SearchIcon />
             <input
                 className={styles.input}

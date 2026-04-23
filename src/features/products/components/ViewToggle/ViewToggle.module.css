@@ -23,6 +23,10 @@
   color: var(--color-text-primary);
 }
 
+.btn:focus {
+  outline: 2px solid var(--color-accent);
+}
+
 .btn.active {
   color: var(--color-accent);
 }

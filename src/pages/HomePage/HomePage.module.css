@@ -40,10 +40,15 @@
   color: var(--color-text-secondary);
   cursor: pointer;
   transition: background 0.15s;
+  border-radius: 4px;
 }
 
 .filterBtn:hover {
   background: var(--color-hover);
+}
+
+.filterBtn:focus {
+  outline: 2px solid var(--color-accent);
 }
 
 .filterBtn.filterActive {

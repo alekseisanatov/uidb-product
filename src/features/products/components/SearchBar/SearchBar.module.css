@@ -10,6 +10,15 @@
   height: 34px;
 }
 
+.wrapper:hover {
+  background-color: var(--color-border-card );
+}
+
+.wrapper:has(.input:focus) {
+  outline: 1px solid var(--color-accent);
+  background-color: #f6f6f8;
+}
+
 .icon {
   width: 14px;
   height: 14px;
