@@ -57,17 +57,12 @@ export const HomePage = () => {
                         type="button"
                         className={`${styles.filterBtn} ${
                             selectedLines.length > 0 ? styles.filterActive : ""
-                        }`}
+                        } ${filterOpen ? styles.filterOpen : ""}`}
                         onClick={() => setFilterOpen((v) => !v)}
                         aria-expanded={filterOpen}
                         aria-controls="filter-panel"
                     >
                         Filter
-                        {selectedLines.length > 0 && (
-                            <span className={styles.badge}>
-                                {selectedLines.length}
-                            </span>
-                        )}
                     </button>
                 </div>
             </div>
