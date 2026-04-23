@@ -1,62 +1,66 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { fetchDevices, DEVICES_QUERY_KEY, DEVICES_STALE_TIME } from "../../../lib/api";
+import {
+    fetchDevices,
+    DEVICES_QUERY_KEY,
+    DEVICES_STALE_TIME,
+} from "../../../lib/api";
 import { useStore } from "../../../store/useStore";
 import { useDebounce } from "./useDebounce";
 
 export function useProducts() {
-  const { search, selectedLines } = useStore();
-  const debouncedSearch = useDebounce(search, 300);
+    const { search, selectedLines } = useStore();
+    const debouncedSearch = useDebounce(search, 300);
 
-  const { data: rawDevices, ...query } = useQuery({
-    queryKey: DEVICES_QUERY_KEY,
-    queryFn: fetchDevices,
-    staleTime: DEVICES_STALE_TIME,
-  });
-
-  const lines = useMemo(() => {
-    if (!rawDevices) return [];
-    const uniqueLines = new Map<string, string>();
-
-    rawDevices.forEach((d) => {
-      if (d.line?.id && d.line?.name) {
-        uniqueLines.set(d.line.id, d.line.name);
-      }
+    const { data: rawDevices, ...query } = useQuery({
+        queryKey: DEVICES_QUERY_KEY,
+        queryFn: fetchDevices,
+        staleTime: DEVICES_STALE_TIME,
     });
 
-    return Array.from(uniqueLines, ([id, name]) => ({ id, name }));
-  }, [rawDevices]);
+    const lines = useMemo(() => {
+        if (!rawDevices) return [];
+        const uniqueLines = new Map<string, string>();
 
-  const filtered = useMemo(() => {
-    if (!rawDevices) return [];
+        rawDevices.forEach((d) => {
+            if (d.line?.id && d.line?.name) {
+                uniqueLines.set(d.line.id, d.line.name);
+            }
+        });
 
-    return rawDevices.filter((d) => {
-      if (
-        selectedLines.length > 0 &&
-        (!d.line || !selectedLines.includes(d.line.id))
-      ) {
-        return false;
-      }
+        return Array.from(uniqueLines, ([id, name]) => ({ id, name }));
+    }, [rawDevices]);
 
-      if (debouncedSearch.trim()) {
-        const q = debouncedSearch.toLowerCase();
-        const matchName = d.product?.name?.toLowerCase().includes(q);
-        const matchShortname = d.shortnames?.some((s) =>
-          s.toLowerCase().includes(q),
-        );
+    const filtered = useMemo(() => {
+        if (!rawDevices) return [];
 
-        if (!matchName && !matchShortname) return false;
-      }
+        return rawDevices.filter((d) => {
+            if (
+                selectedLines.length > 0 &&
+                (!d.line || !selectedLines.includes(d.line.id))
+            ) {
+                return false;
+            }
 
-      return true;
-    });
-  }, [rawDevices, debouncedSearch, selectedLines]);
+            if (debouncedSearch.trim()) {
+                const q = debouncedSearch.toLowerCase();
+                const matchName = d.product?.name?.toLowerCase().includes(q);
+                const matchShortname = d.shortnames?.some((s) =>
+                    s.toLowerCase().includes(q),
+                );
 
-  return {
-    ...query,
-    devices: filtered,
-    lines,
-    totalCount: rawDevices?.length ?? 0,
-    filteredCount: filtered.length,
-  };
+                if (!matchName && !matchShortname) return false;
+            }
+
+            return true;
+        });
+    }, [rawDevices, debouncedSearch, selectedLines]);
+
+    return {
+        ...query,
+        devices: filtered,
+        lines,
+        totalCount: rawDevices?.length ?? 0,
+        filteredCount: filtered.length,
+    };
 }
