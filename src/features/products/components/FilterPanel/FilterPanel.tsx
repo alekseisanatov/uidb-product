@@ -9,6 +9,7 @@ interface I_FilterPanelProps {
 
 export const FilterPanel = ({ lines, onClose }: I_FilterPanelProps) => {
     const { selectedLines, toggleLine, clearLines } = useStore();
+    const hasFilters = selectedLines.length > 0;
 
     useEffect(() => {
         const onKey = (e: KeyboardEvent) => {
@@ -28,28 +29,36 @@ export const FilterPanel = ({ lines, onClose }: I_FilterPanelProps) => {
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className={styles.header}>
-                    <span className={styles.title}>Filter by Product Line</span>
-                    {selectedLines.length > 0 && (
-                        <button className={styles.clear} onClick={clearLines}>
-                            Clear
-                        </button>
-                    )}
+                    <span className={styles.title}>Product line</span>
                 </div>
                 <ul className={styles.list}>
-                    {lines.map((line) => (
-                        <li key={line.id}>
-                            <label className={styles.item}>
-                                <input
-                                    type="checkbox"
-                                    checked={selectedLines.includes(line.id)}
-                                    onChange={() => toggleLine(line.id)}
-                                    className={styles.checkbox}
-                                />
-                                <span>{line.name}</span>
-                            </label>
-                        </li>
-                    ))}
+                    {lines.map((line) => {
+                        const isActive = selectedLines.includes(line.id);
+                        return (
+                            <li key={line.id}>
+                                <label
+                                    className={`${styles.item} ${isActive ? styles.itemActive : ""}`}
+                                >
+                                    <input
+                                        type="checkbox"
+                                        checked={isActive}
+                                        onChange={() => toggleLine(line.id)}
+                                        className={styles.checkbox}
+                                    />
+                                    <span>{line.name}</span>
+                                </label>
+                            </li>
+                        );
+                    })}
                 </ul>
+                <button
+                    type="button"
+                    className={`${styles.reset} ${!hasFilters ? styles.resetDisabled : ""}`}
+                    onClick={clearLines}
+                    disabled={!hasFilters}
+                >
+                    Reset
+                </button>
             </div>
         </div>
     );
