@@ -4,6 +4,7 @@ import { HomePage } from "./pages/HomePage";
 import { ProductPage } from "./pages/ProductPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { Header } from "./components/Header";
+import { ErrorBoundary } from "./components/ErrorBoundary/ErrorBoundary";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -20,15 +21,20 @@ export const App = () => {
             <BrowserRouter>
                 <Header />
                 <main>
-                    <Routes>
-                        <Route
-                            path="/"
-                            element={<Navigate to="/devices" replace />}
-                        />
-                        <Route path="/devices" element={<HomePage />} />
-                        <Route path="/devices/:id" element={<ProductPage />} />
-                        <Route path="*" element={<NotFoundPage />} />
-                    </Routes>
+                    <ErrorBoundary>
+                        <Routes>
+                            <Route
+                                path="/"
+                                element={<Navigate to="/devices" replace />}
+                            />
+                            <Route path="/devices" element={<HomePage />} />
+                            <Route
+                                path="/devices/:id"
+                                element={<ProductPage />}
+                            />
+                            <Route path="*" element={<NotFoundPage />} />
+                        </Routes>
+                    </ErrorBoundary>
                 </main>
             </BrowserRouter>
         </QueryClientProvider>
