@@ -1,91 +1,91 @@
 .wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: #f6f6f8;
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  padding: 0 12px;
-  width: 220px;
-  height: 34px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f6f6f8;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 0 12px;
+    width: 220px;
+    height: 34px;
 }
 
 .wrapper:hover {
-  background-color: var(--color-border-card );
+    background-color: var(--color-border-card);
 }
 
 .wrapper:has(.input:focus) {
-  outline: 1px solid var(--color-accent);
-  background-color: #f6f6f8;
+    outline: 1px solid var(--color-accent);
+    background-color: #f6f6f8;
 }
 
 .icon {
-  width: 14px;
-  height: 14px;
-  color: var(--color-text-secondary);
-  flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    color: var(--color-text-secondary);
+    flex-shrink: 0;
 }
 
 .input {
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 14px;
-  color: var(--color-text-primary);
-  width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    color: var(--color-text-primary);
+    width: 100%;
 }
 
 .input::placeholder {
-  color: var(--color-text-secondary);
+    color: var(--color-text-secondary);
 }
 
 .input::-webkit-search-cancel-button {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .dropdown {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  right: 0;
-  background: var(--color-bg-primary, #fff);
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  list-style: none;
-  margin: 0;
-  padding: 4px 0;
-  z-index: 100;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: var(--color-bg-primary, #fff);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+    z-index: 100;
 }
 
 .suggestion {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 12px;
-  font-size: 14px;
-  color: var(--color-text-primary);
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: var(--color-text-primary);
+    cursor: pointer;
 }
 
 .suggestion:hover,
 .suggestion:focus {
-  background-color: var(--color-border-card);
-  outline: 1px solid var(--color-accent);
-  outline-offset: -1px;
+    background-color: var(--color-border-card);
+    outline: 1px solid var(--color-accent);
+    outline-offset: -1px;
 }
 
 .shortname {
-  color: var(--color-text-secondary);
-  font-size: 12px;
-  flex-shrink: 0;
-  margin-left: 8px;
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-left: 8px;
 }
 
 .highlight {
-  background: transparent;
-  color: inherit;
-  text-decoration: underline;
-  font-weight: 600;
+    background: transparent;
+    color: inherit;
+    text-decoration: underline;
+    font-weight: 600;
 }

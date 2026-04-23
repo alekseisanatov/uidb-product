@@ -1,116 +1,118 @@
 .overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
 }
 
 .panel {
-  position: absolute;
-  top: 100px;
-  right: 30px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  width: max-content;
-  padding: 12px 0 0;
-  display: flex;
-  flex-direction: column;
+    position: absolute;
+    top: 100px;
+    right: 30px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    width: max-content;
+    padding: 12px 0 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .header {
-  padding: 0 16px 8px;
-  border-bottom: 1px solid var(--color-border);
-  margin-bottom: 4px;
+    padding: 0 16px 8px;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 4px;
 }
 
 .title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--color-text-primary);
-  font-weight: bold;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    font-weight: bold;
 }
 
 .list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  cursor: pointer;
-  font-size: 14px;
-  color: var(--color-text-primary);
-  transition: background 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--color-text-primary);
+    transition: background 0.1s;
 }
 
 .item:hover {
-  background: var(--color-hover);
+    background: var(--color-hover);
 }
 
 .itemActive {
-  color: var(--color-accent);
-  background: rgba(0, 106, 255, 0.06);
+    color: var(--color-accent);
+    background: rgba(0, 106, 255, 0.06);
 }
 
 .itemActive:hover {
-  background: rgba(0, 106, 255, 0.1);
+    background: rgba(0, 106, 255, 0.1);
 }
 
 .checkbox {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-  border-radius: 4px;
-  border: 1.5px solid #b6b9c4;
-  background: transparent;
-  cursor: pointer;
-  position: relative;
-  transition: border-color 0.15s, background 0.15s;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    border: 1.5px solid #b6b9c4;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+    transition:
+        border-color 0.15s,
+        background 0.15s;
 }
 
 .checkbox:checked {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
+    background: var(--color-accent);
+    border-color: var(--color-accent);
 }
 
 .checkbox:checked::after {
-  content: '';
-  position: absolute;
-  left: 4px;
-  top: 1px;
-  width: 5px;
-  height: 9px;
-  border: 2px solid #fff;
-  border-top: none;
-  border-left: none;
-  transform: rotate(45deg);
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
 }
 
 .reset {
-  width: 100%;
-  padding: 16px;
-  text-align: left;
-  font-size: 14px;
-  font-weight: 500;
-  color: #f03333;
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: background 0.1s;
+    width: 100%;
+    padding: 16px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 500;
+    color: #f03333;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.1s;
 }
 
 .reset:hover:not(:disabled) {
-  background: rgba(240, 51, 51, 0.06);
+    background: rgba(240, 51, 51, 0.06);
 }
 
 .resetDisabled {
-  opacity: 0.35;
-  cursor: default;
+    opacity: 0.35;
+    cursor: default;
 }

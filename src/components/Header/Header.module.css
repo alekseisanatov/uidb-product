@@ -1,49 +1,49 @@
 .header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 48px;
-  padding: 0 20px 0 0;
-  background: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
-  position: sticky;
-  border-radius: 0;
-  top: 0;
-  z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    padding: 0 20px 0 0;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    border-radius: 0;
+    top: 0;
+    z-index: 100;
 }
 
 .left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .logo {
-  display: flex;
-  align-items: center;
-  padding: 13px;
-  color: #50565e;
-  transition: color 0.15s;
-  cursor: pointer;
-  outline: none;
+    display: flex;
+    align-items: center;
+    padding: 13px;
+    color: #50565e;
+    transition: color 0.15s;
+    cursor: pointer;
+    outline: none;
 }
 
 .logo:hover {
-  color: var(--color-accent);
+    color: var(--color-accent);
 }
 
 .logo:focus-visible {
-  outline: 1px solid var(--color-accent);
-  outline-offset: -1px;
+    outline: 1px solid var(--color-accent);
+    outline-offset: -1px;
 }
 
 .title {
-  font-size: 14px;
-  font-weight: 500;
-  color: #808893;
+    font-size: 14px;
+    font-weight: 500;
+    color: #808893;
 }
 
 .author {
-  font-size: 14px;
-  color: var(--color-text-secondary);
+    font-size: 14px;
+    color: var(--color-text-secondary);
 }

@@ -1,17 +1,19 @@
 .wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 48px;
 }
 
 .spinner {
-  border: 2px solid var(--color-border);
-  border-top-color: var(--color-accent);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
+    border: 2px solid var(--color-border);
+    border-top-color: var(--color-accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
