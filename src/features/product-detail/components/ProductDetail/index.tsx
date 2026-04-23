@@ -80,7 +80,6 @@ export const ProductDetail = () => {
                         <div className={styles.noImage} />
                     )}
                 </div>
-
                 <div className={styles.details}>
                     <h1 className={styles.name}>
                         {device.product?.name ?? "Unknown"}
@@ -88,37 +87,36 @@ export const ProductDetail = () => {
                     {device.line?.name && (
                         <p className={styles.lineName}>{device.line.name}</p>
                     )}
-                </div>
 
-                <div className={styles.specs}>
-                    {specRows.map((row) => (
-                        <div key={row.label} className={styles.specRow}>
-                            <span className={styles.specLabel}>
-                                {row.label}
-                            </span>
-                            <span className={styles.specValue}>
-                                {String(row.value)}
-                            </span>
-                        </div>
-                    ))}
+                    <div className={styles.specs}>
+                        {specRows.map((row) => (
+                            <div key={row.label} className={styles.specRow}>
+                                <span className={styles.specLabel}>
+                                    {row.label}
+                                </span>
+                                <span className={styles.specValue}>
+                                    {String(row.value)}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                    <button
+                        className={styles.jsonLink}
+                        onClick={() => {
+                            const blob = new Blob(
+                                [JSON.stringify(device, null, 2)],
+                                {
+                                    type: "application/json",
+                                },
+                            );
+                            const url = URL.createObjectURL(blob);
+                            window.open(url, "_blank");
+                            setTimeout(() => URL.revokeObjectURL(url), 60_000);
+                        }}
+                    >
+                        See All Details as JSON
+                    </button>
                 </div>
-
-                <button
-                    className={styles.jsonLink}
-                    onClick={() => {
-                        const blob = new Blob(
-                            [JSON.stringify(device, null, 2)],
-                            {
-                                type: "application/json",
-                            },
-                        );
-                        const url = URL.createObjectURL(blob);
-                        window.open(url, "_blank");
-                        setTimeout(() => URL.revokeObjectURL(url), 60_000);
-                    }}
-                >
-                    See All Details as JSON
-                </button>
             </div>
         </div>
     );
