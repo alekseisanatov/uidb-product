@@ -114,7 +114,6 @@ export const ProductDetail = () => {
                         );
                         const url = URL.createObjectURL(blob);
                         window.open(url, "_blank");
-                        // Give the new tab time to fetch the blob, then release it.
                         setTimeout(() => URL.revokeObjectURL(url), 60_000);
                     }}
                 >
