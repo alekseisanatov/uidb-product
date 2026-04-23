@@ -22,6 +22,13 @@ export const ProductDetail = () => {
 
     const imageUrl = getDeviceImageUrl(device, DETAIL_IMAGE_SIZE);
 
+    const specRows = [
+        { label: "Product Line", value: device.line?.name },
+        { label: "ID", value: device.line?.id },
+        { label: "Name", value: device.product?.name },
+        { label: "Short Name", value: device.shortnames?.[0] },
+    ].filter((r) => r.value != null);
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.toolbar}>
@@ -82,6 +89,37 @@ export const ProductDetail = () => {
                         <p className={styles.lineName}>{device.line.name}</p>
                     )}
                 </div>
+
+                <div className={styles.specs}>
+                    {specRows.map((row) => (
+                        <div key={row.label} className={styles.specRow}>
+                            <span className={styles.specLabel}>
+                                {row.label}
+                            </span>
+                            <span className={styles.specValue}>
+                                {String(row.value)}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+
+                <button
+                    className={styles.jsonLink}
+                    onClick={() => {
+                        const blob = new Blob(
+                            [JSON.stringify(device, null, 2)],
+                            {
+                                type: "application/json",
+                            },
+                        );
+                        const url = URL.createObjectURL(blob);
+                        window.open(url, "_blank");
+                        // Give the new tab time to fetch the blob, then release it.
+                        setTimeout(() => URL.revokeObjectURL(url), 60_000);
+                    }}
+                >
+                    See All Details as JSON
+                </button>
             </div>
         </div>
     );
