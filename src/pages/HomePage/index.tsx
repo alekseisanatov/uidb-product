@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useProducts } from "../../features/products/hooks/useProducts";
 import { useStore } from "../../store/useStore";
 import { SearchBar } from "../../features/products/components/SearchBar/SearchBar";
@@ -18,10 +18,25 @@ export const HomePage = () => {
 
     const [filterOpen, setFilterOpen] = useState(false);
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+    const filterWrapperRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setVisibleCount(PAGE_SIZE);
     }, [search, selectedLines]);
+
+    useEffect(() => {
+        if (!filterOpen) return;
+        const onMouseDown = (e: MouseEvent) => {
+            if (
+                filterWrapperRef.current &&
+                !filterWrapperRef.current.contains(e.target as Node)
+            ) {
+                setFilterOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", onMouseDown);
+        return () => document.removeEventListener("mousedown", onMouseDown);
+    }, [filterOpen]);
 
     const visibleDevices = useMemo(
         () => devices.slice(0, visibleCount),
@@ -53,26 +68,32 @@ export const HomePage = () => {
 
                 <div className={styles.toolbarRight}>
                     <ViewToggle />
-                    <button
-                        type="button"
-                        className={`${styles.filterBtn} ${
-                            selectedLines.length > 0 ? styles.filterActive : ""
-                        } ${filterOpen ? styles.filterOpen : ""}`}
-                        onClick={() => setFilterOpen((v) => !v)}
-                        aria-expanded={filterOpen}
-                        aria-controls="filter-panel"
+                    <div
+                        ref={filterWrapperRef}
+                        className={styles.filterWrapper}
                     >
-                        Filter
-                    </button>
+                        <button
+                            type="button"
+                            className={`${styles.filterBtn} ${
+                                selectedLines.length > 0
+                                    ? styles.filterActive
+                                    : ""
+                            } ${filterOpen ? styles.filterOpen : ""}`}
+                            onClick={() => setFilterOpen((v) => !v)}
+                            aria-expanded={filterOpen}
+                            aria-controls="filter-panel"
+                        >
+                            Filter
+                        </button>
+                        {filterOpen && (
+                            <FilterPanel
+                                lines={lines}
+                                onClose={() => setFilterOpen(false)}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
-
-            {filterOpen && (
-                <FilterPanel
-                    lines={lines}
-                    onClose={() => setFilterOpen(false)}
-                />
-            )}
 
             <div className={styles.content}>
                 {devices.length === 0 ? (

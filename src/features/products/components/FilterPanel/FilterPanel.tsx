@@ -20,46 +20,43 @@ export const FilterPanel = ({ lines, onClose }: I_FilterPanelProps) => {
     }, [onClose]);
 
     return (
-        <div className={styles.overlay} onClick={onClose}>
-            <div
-                id="filter-panel"
-                role="dialog"
-                aria-label="Filter by product line"
-                className={styles.panel}
-                onClick={(e) => e.stopPropagation()}
-            >
-                <div className={styles.header}>
-                    <span className={styles.title}>Product line</span>
-                </div>
-                <ul className={styles.list}>
-                    {lines.map((line) => {
-                        const isActive = selectedLines.includes(line.id);
-                        return (
-                            <li key={line.id}>
-                                <label
-                                    className={`${styles.item} ${isActive ? styles.itemActive : ""}`}
-                                >
-                                    <input
-                                        type="checkbox"
-                                        checked={isActive}
-                                        onChange={() => toggleLine(line.id)}
-                                        className={styles.checkbox}
-                                    />
-                                    <span>{line.name}</span>
-                                </label>
-                            </li>
-                        );
-                    })}
-                </ul>
-                <button
-                    type="button"
-                    className={`${styles.reset} ${!hasFilters ? styles.resetDisabled : ""}`}
-                    onClick={clearLines}
-                    disabled={!hasFilters}
-                >
-                    Reset
-                </button>
+        <div
+            id="filter-panel"
+            role="dialog"
+            aria-label="Filter by product line"
+            className={styles.panel}
+        >
+            <div className={styles.header}>
+                <span className={styles.title}>Product line</span>
             </div>
+            <ul className={styles.list}>
+                {lines.map((line) => {
+                    const isActive = selectedLines.includes(line.id);
+                    return (
+                        <li key={line.id}>
+                            <label
+                                className={`${styles.item} ${isActive ? styles.itemActive : ""}`}
+                            >
+                                <input
+                                    type="checkbox"
+                                    checked={isActive}
+                                    onChange={() => toggleLine(line.id)}
+                                    className={styles.checkbox}
+                                />
+                                <span>{line.name}</span>
+                            </label>
+                        </li>
+                    );
+                })}
+            </ul>
+            <button
+                type="button"
+                className={`${styles.reset} ${!hasFilters ? styles.resetDisabled : ""}`}
+                onClick={clearLines}
+                disabled={!hasFilters}
+            >
+                Reset
+            </button>
         </div>
     );
 };
