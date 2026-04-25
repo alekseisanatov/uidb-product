@@ -10,10 +10,24 @@
     gap: 16px;
 }
 
+@media (max-width: 542px) {
+    .toolbar {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
 .toolbarLeft {
     display: flex;
     align-items: center;
     gap: 16px;
+}
+
+@media (max-width: 400px) {
+    .toolbarLeft {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 }
 
 .count {
