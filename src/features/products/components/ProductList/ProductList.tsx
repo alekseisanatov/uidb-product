@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { T_Device } from "../../../../types/product";
 import { getDeviceImageUrl, LIST_IMAGE_SIZE } from "../../../../lib/imageUrl";
@@ -10,15 +10,17 @@ interface I_ProductListProps {
 
 const ProductRowComponent = ({ device }: { device: T_Device }) => {
     const imageUrl = getDeviceImageUrl(device, LIST_IMAGE_SIZE);
+    const [imgError, setImgError] = useState(false);
     return (
         <Link to={`/devices/${device.id}`} className={styles.row}>
             <span className={styles.colImage}>
-                {imageUrl ? (
+                {imageUrl && !imgError ? (
                     <img
                         src={imageUrl}
                         alt={device.product?.name ?? "Device"}
                         className={styles.image}
                         loading="lazy"
+                        onError={() => setImgError(true)}
                     />
                 ) : (
                     <div className={styles.noImage} />

@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { T_Device } from "../../../../types/product";
 import { getDeviceImageUrl, GRID_IMAGE_SIZE } from "../../../../lib/imageUrl";
@@ -10,6 +10,7 @@ interface I_ProductCardProps {
 
 const ProductCardComponent = ({ device }: I_ProductCardProps) => {
     const imageUrl = getDeviceImageUrl(device, GRID_IMAGE_SIZE);
+    const [imgError, setImgError] = useState(false);
 
     return (
         <Link to={`/devices/${device.id}`} className={styles.card}>
@@ -17,12 +18,13 @@ const ProductCardComponent = ({ device }: I_ProductCardProps) => {
                 <span className={styles.line}>{device.line.name}</span>
             )}
             <div className={styles.imageWrapper}>
-                {imageUrl ? (
+                {imageUrl && !imgError ? (
                     <img
                         src={imageUrl}
                         alt={device.product?.name ?? "Device"}
                         className={styles.image}
                         loading="lazy"
+                        onError={() => setImgError(true)}
                     />
                 ) : (
                     <div className={styles.noImage} />

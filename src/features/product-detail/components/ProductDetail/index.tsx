@@ -15,6 +15,7 @@ export const ProductDetail = () => {
     const navigate = useNavigate();
     const { device, prevId, nextId, isLoading, isError } = useProduct(id);
     const [imgLoaded, setImgLoaded] = useState(false);
+    const [imgError, setImgError] = useState(false);
 
     if (isLoading) return <Spinner />;
     if (isError) return <ErrorState message="Failed to load device data." />;
@@ -61,7 +62,7 @@ export const ProductDetail = () => {
 
             <div className={styles.content}>
                 <div className={styles.imageCard}>
-                    {imageUrl ? (
+                    {imageUrl && !imgError ? (
                         <>
                             {!imgLoaded && (
                                 <div className={styles.imgSkeleton} />
@@ -74,6 +75,7 @@ export const ProductDetail = () => {
                                     display: imgLoaded ? "block" : "none",
                                 }}
                                 onLoad={() => setImgLoaded(true)}
+                                onError={() => setImgError(true)}
                             />
                         </>
                     ) : (
